@@ -1,0 +1,107 @@
+﻿<Window
+    x:Class="Commander.View.MiniTCWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:r="clr-namespace:Commander.Properties"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:Commander.View"
+    xmlns:vm="clr-namespace:Commander.ViewModel.WindowVM"
+    mc:Ignorable="d"
+    Background="#FFFFFF"
+    Height="800"
+    Width="1000"
+    Title="MiniTtotalCommander"
+    WindowStartupLocation="CenterScreen"
+    >
+
+    <Window.Resources>
+        <vm:MiniTCVM
+            x:Key="vm" />
+    </Window.Resources>
+
+    <Grid
+        DataContext="{StaticResource vm}">
+
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="*" />
+            <RowDefinition
+                Height="40" />
+        </Grid.RowDefinitions>
+
+        <ItemsControl
+            ItemsSource="{Binding Panels}">
+
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid
+                        Rows="1"
+                        Columns="2">
+
+                    </UniformGrid>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+
+            <ItemsControl.ItemTemplate>
+
+                <DataTemplate>
+                    <local:PanelTCControl
+                        SelectedFile="{Binding SelectedFile}"
+                        ErrorText="{Binding ErrorText}"
+                        SelectPath="{Binding PathSelectCommand}"
+                        PathContent="{Binding Content}"
+                        SelectedDriveIndex="{Binding SelectedDriveIndex, Mode=TwoWay}"
+                        Drivers="{Binding Path=Drivers}"
+                        Path="{Binding Path=Path}" />
+
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <Grid
+            Margin="10,0,10,5"
+            Grid.Row="1">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition
+                    Width="*" />
+                <ColumnDefinition
+                    Width="Auto" />
+                <ColumnDefinition
+                    Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Viewbox
+                Margin="10,0"
+                StretchDirection="Both"
+                Stretch="Uniform">
+                <TextBlock
+                    Foreground="DarkRed"
+                    Text="{Binding CopyError}" />
+            </Viewbox>
+
+            <Viewbox
+                Grid.Column="2"
+                Margin="10,0"
+                StretchDirection="Both"
+                Stretch="Uniform">
+                <TextBlock
+                    Foreground="GreenYellow"
+                    Text="{Binding SuccesfullCopy}" />
+            </Viewbox>
+            
+            <Button
+                Grid.Column="1"
+                Command="{Binding CopyCommand}"
+                Margin="5"
+                Width="100">
+                <TextBlock
+                    Text="{x:Static r:Resources.copy}" />
+            </Button>
+
+        </Grid>
+
+    </Grid>
+
+</Window>
